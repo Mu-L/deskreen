@@ -31,4 +31,6 @@ export enum IpcEvents {
 	GetPort = 'get-port',
 	OpenExternalLink = 'open-external-link',
 	WriteTextToClipboard = 'write-text-to-clipboard',
+	CheckScreenRecordingPermission = 'check-screen-recording-permission',
+	RelaunchApp = 'relaunch-app',
 }

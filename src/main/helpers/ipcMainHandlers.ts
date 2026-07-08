@@ -5,6 +5,7 @@ import {
 	screen,
 	clipboard,
 	shell,
+	app,
 } from 'electron';
 import i18n from '../configs/i18next.config';
 import { ConnectedDevicesService } from '../../features/ConnectedDevicesService';
@@ -21,6 +22,7 @@ import { ElectronStoreKeys } from '../../common/ElectronStoreKeys.enum';
 import { store } from '../../common/deskreen-electron-store';
 import DesktopCapturerSourceType from '../../common/DesktopCapturerSourceType';
 import isLinuxWaylandSession from '../utils/isLinuxWaylandSession';
+import { checkScreenRecordingPermission } from './checkScreenRecordingPermission';
 
 export const initIpcMainHandlers = (mainWindow: BrowserWindow): void => {
 	ipcMain.on('client-changed-language', async (_, newLangCode) => {
@@ -489,6 +491,15 @@ export const initIpcMainHandlers = (mainWindow: BrowserWindow): void => {
 
 	ipcMain.handle(IpcEvents.WriteTextToClipboard, (_, text) => {
 		clipboard.writeText(text);
+	});
+
+	ipcMain.handle(IpcEvents.CheckScreenRecordingPermission, () => {
+		return checkScreenRecordingPermission();
+	});
+
+	ipcMain.handle(IpcEvents.RelaunchApp, () => {
+		app.relaunch();
+		app.exit(0);
 	});
 
 	void createWaitingForConnectionSharingSession();

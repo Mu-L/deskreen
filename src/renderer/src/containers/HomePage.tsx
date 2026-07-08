@@ -6,7 +6,9 @@ import { LIGHT_UI_BACKGROUND } from './SettingsProvider';
 import DeskreenStepper from './DeskreenStepper';
 import { Device } from '../../../common/Device';
 import TopPanel from '@renderer/components/TopPanel';
+import ScreenRecordingPermissionModal from '@renderer/components/ScreenRecordingPermissionModal';
 import { IpcEvents } from '../../../common/IpcEvents.enum';
+import { useScreenRecordingPermission } from '@renderer/hooks/useScreenRecordingPermission';
 
 // @ts-ignore: it is ok here, be like js it is fine
 // eslint-disable-next-line react/prop-types
@@ -36,6 +38,8 @@ export default function HomePage(): React.ReactElement {
 	const [isUserAllowedConnection, setIsUserAllowedConnection] = useState(false);
 	const [pendingConnectionDevice, setPendingConnectionDevice] =
 		useState<Device | null>(null);
+
+	const hasScreenPermission = useScreenRecordingPermission();
 
 	const handleResetWithSharingSessionRestart =
 		useCallback(async (): Promise<void> => {
@@ -71,6 +75,7 @@ export default function HomePage(): React.ReactElement {
 					setPendingConnectionDevice={setPendingConnectionDevice}
 					handleReset={handleResetWithSharingSessionRestart}
 				/>
+				<ScreenRecordingPermissionModal isOpen={!hasScreenPermission} />
 			</div>
 		</ToastProvider>
 	);
